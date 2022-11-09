@@ -1,4 +1,13 @@
-GANACHE_VERSION = 7.5.0
+VERSION = 7.5.0
 
-dev:#linux/arm64/v8,
-	docker buildx build --platform=linux/amd64,linux/arm64/v8 --build-arg GANACHE_VERSION=${GANACHE_VERSION} --push --tag ghcr.io/solohin/arm64-docker-images:${GANACHE_VERSION} .
+dev: build
+	docker build -t solohin/ganache:${VERSION} .
+	docker run --rm -it solohin/ganache:${VERSION} --accounts 1 --seed 123456789
+
+build: 
+	docker build --build-arg VERSION=${VERSION} -t solohin/ganache:${VERSION} .
+
+push: build
+	docker push solohin/ganache:${VERSION}
+	docker tag solohin/ganache:${VERSION} solohin/ganache:latest
+	docker push solohin/ganache:latest

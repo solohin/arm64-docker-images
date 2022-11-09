@@ -1,8 +1,9 @@
 FROM node:18
 
 # ganache version
-ARG GANACHE_VERSION
+ARG VERSION
+ENV VERSION=$VERSION
 
-RUN npm install ganache@${VERSION} -g
+RUN npm install ganache@$VERSION -g
 
 ENTRYPOINT ["ganache"]
